@@ -50,6 +50,7 @@ function playTheGame(e){
     }
 }
 const convoExchange=(mode)=>{
+    document.removeEventListener('keyup',playTheGame);
     switch(mode){
         case 'mercy':
             convos[1].classList.add('speaking');
@@ -64,8 +65,10 @@ const convoExchange=(mode)=>{
             },2000);
             break;
         case 'intimidate':
+            convos[1].classList.add('speaking')
             convos[1].textContent='Your days of RPS-terrorism have come to an end. Surrender now!';
             setTimeout(()=>{
+                convos[0].classList.add('speaking')
                 convos[0].textContent='Ok! I will leave...';
                 convos[1].textContent='';
                 setTimeout(()=>{
@@ -74,12 +77,19 @@ const convoExchange=(mode)=>{
             },2500);
             break;
         case 'aggro':
+            convos[0].classList.add('speaking');
             convos[0].textContent='Show me what you got!';
             setTimeout(()=>{
-                //convos[0].textContent='';
+                convos[0].textContent='';
+                convos[1].classList.add('speaking');
                 convos[1].textContent='Oh I\'ll show you, like Euclid showed the infinitude of primes';
             },2000)
     }
+    convos.forEach(text=>{
+        text.classList.remove('speaking');
+        text.textContent='';
+    })
+    document.addEventListener('keyup',playTheGame)
 };
 const attack=function(move){
         convos[0].textContent='';
@@ -126,6 +136,7 @@ const checkClear=function(){
         convos[0].classList.add('speaking');
         convos[0].textContent='I admit defeat, you win';
         document.removeEventListener('keyup',playTheGame);
+        alert('You have defeated Mr. Roboto. Press any key to play again.');
         document.addEventListener('keyup',resetTheGame);
      }else if(healthBars[1].textContent==0){
         convos[0].classList.add('speaking');
@@ -137,6 +148,7 @@ const checkClear=function(){
             },500);
         },1500)
         document.removeEventListener('keyup',playTheGame)
+        alert('Mr. Roboto has bested you. Press any key to have another go.');
         document.addEventListener('keyup',resetTheGame)
     }
 }
